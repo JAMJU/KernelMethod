@@ -6,7 +6,6 @@ def sigmoid(u):
     if u < 0.:
         return  max(epsilon, np.asscalar(np.exp(u))/( np.asscalar(np.exp( u)) + 1.))
     else:
-
         return max(epsilon, 1./(1. + np.asscalar(np.exp(- u))))
 
 def solveWKRR(K, W, z, lamb):
@@ -54,12 +53,3 @@ def logistic_kernel_regression(K, label, lamb, nb_it, K_test, label_test):
         print ("on training", j, evaluate_alpha(alpha, K, label))
         print ("iteration ", j, evaluate_alpha(alpha, K_test, label_test))
     return alpha
-
-
-
-
-
-
-
-
-

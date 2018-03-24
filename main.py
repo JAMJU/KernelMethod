@@ -6,6 +6,7 @@ from kernel_creation import get_correspondances, convert_mismatch_dico, get_full
 from kernel_creation import compute_test_matrix, compute_K_matrix, convert_lect_acid
 from read_fn import read_csv_file_label, read_csv_file_data, save_label, save_data_converted
 from SVM import SVM, svm_compute_label
+
 list_letters = ["A", "C", "G", "T"]
 list_trig = [a + b + c for a in list_letters for b in list_letters for c in list_letters]
 list_quad =  [a + b + c + d for a in list_letters for b in list_letters for c in list_letters for d in list_letters]
@@ -70,7 +71,7 @@ for name in ["0", "1", "2"]:
     # to avoid huge values and to save time for the logistic regression :
     sm =  np.sum(training, axis= 1)
     training = training/sm[0]
-    save_data_converted("spectral_kernel/Xtr"+ name+ ".csv", training)
+    #save_data_converted("spectral_kernel/Xtr"+ name+ ".csv", training)
 
     # label training data
     label = read_csv_file_label("data/Ytr"+ name+ ".csv")
@@ -107,10 +108,11 @@ for name in ["0", "1", "2"]:
 
     # Computing the kernel
     print ("beginning computing K")
-    K = compute_K_matrix(training)
-    add = add_param*np.identity(K.shape[0])
-    K_add = K + add # to make it positive definite
-    #print(K)
+    # K = compute_K_matrix(training)
+    # add = add_param*np.identity(K.shape[0])
+    # K_add = K + add # to make it positive definite
+    K = compute_K_gaussian(training, 0.1)
+    print(K)
     print("K shape", K.shape)
     print(is_pos_def(K_add))
     K_test_train = compute_test_matrix(training, test_train)
@@ -136,14 +138,4 @@ for name in ["0", "1", "2"]:
 
 
 #save_label(0, list_labels_log,"results/LKR_acidquad_0-000001.csv" )
-save_label(0, list_labels_svm,"results/SVM_quint_10-6.csv" )
-
-
-
-
-
-
-
-
-
-
+save_label(0, list_labels_svm,"results/GaussianSVM_10-1_quint_10-6.csv" )
