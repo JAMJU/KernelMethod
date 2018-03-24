@@ -25,7 +25,7 @@ def evaluate_alpha(alpha, K, label):
 def compute_loss(K, alpha, lamb, label):
     lab = np.asarray(label).reshape([len(label), 1])
     result = K.dot(alpha)
-    loss = np.log(1 + np.exp(np.multiply(-result, lab)))
+    loss = np.log(1. + np.exp(np.multiply(-result, lab)))
     loss = (1./float(len(label)))*np.sum(loss) + lamb*alpha.T.dot(K).dot(alpha)
     return loss
 
