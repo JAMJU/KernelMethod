@@ -192,13 +192,12 @@ def gaussian_func(vect1, vect2, sigma):
 def compute_K_gaussian(list_sequences_converted, sigma):
     """ Compute the gram matrix for the gaussian kernel"""
     K = [[[]for y in list_sequences_converted] for x in list_sequences_converted]
-    for (phi_vect_i, i) in enumerate(list_sequences_converted):
+    for (i, phi_vect_i) in enumerate(list_sequences_converted):
         phi_vect_i = np.asarray(phi_vect_i, dtype = float).reshape(1,len(phi_vect_i))
-        for (phi_vect_j, j) in enumerate(list_sequences_converted):
+        for (j, phi_vect_j) in enumerate(list_sequences_converted):
             phi_vect_j = np.asarray(phi_vect_j, dtype = float).reshape(1,len(phi_vect_j))
-            K[i][j] = gaussian_func(phi_i_array, phi_j_array, sigma)
-    ex = list_sequences_converted[0]
-    return np.asarray(K).reshape(len(ex), len(ex))
+            K[i][j] = gaussian_func(phi_vect_i, phi_vect_j, sigma)
+    return np.asarray(K).reshape(len(list_sequences_converted), len(list_sequences_converted))
 
 def compute_K_matrix(list_sequences_converted):
     """ Compute the gram matrix"""

@@ -3,7 +3,7 @@ from logistic_regression import logistic_kernel_regression, compute_label
 from kernel_creation import convert_spectral_kernel_quad, convert_spectral_kernel_quint, convert_spectral_kernel_trig
 from kernel_creation import convert_acid_kernel, convert_acid_quad, convert_mismatch_lev, convert_lect_trig, get_mismatch_dict
 from kernel_creation import get_correspondances, convert_mismatch_dico, get_full_corres
-from kernel_creation import compute_test_matrix, compute_K_matrix, convert_lect_acid
+from kernel_creation import compute_test_matrix, compute_K_matrix, convert_lect_acid, compute_K_gaussian
 from read_fn import read_csv_file_label, read_csv_file_data, save_label, save_data_converted
 from SVM import SVM, svm_compute_label
 
@@ -29,6 +29,7 @@ def is_pos_def(x):
 ## Parameters
 lamb_log = 0.000001
 lamb_svm = 0.00001
+sigma = 0.8
 add_param = 10.**(-10)
 list_seq_id = list_six
 mis_lev = False
@@ -111,7 +112,8 @@ for name in ["0", "1", "2"]:
     # K = compute_K_matrix(training)
     # add = add_param*np.identity(K.shape[0])
     # K_add = K + add # to make it positive definite
-    K = compute_K_gaussian(training, 0.1)
+    K = compute_K_gaussian(training, sigma)
+    K_add = K
     print(K)
     print("K shape", K.shape)
     print(is_pos_def(K_add))
@@ -138,4 +140,4 @@ for name in ["0", "1", "2"]:
 
 
 #save_label(0, list_labels_log,"results/LKR_acidquad_0-000001.csv" )
-save_label(0, list_labels_svm,"results/GaussianSVM_10-1_quint_10-6.csv" )
+save_label(0, list_labels_svm,"results/GaussianSVM_1_quint_10-4.csv" )
