@@ -6,6 +6,7 @@ def sigmoid(u):
     if u < 0.:
         return  max(epsilon, np.asscalar(np.exp(u))/( np.asscalar(np.exp( u)) + 1.))
     else:
+
         return max(epsilon, 1./(1. + np.asscalar(np.exp(- u))))
 
 def solveWKRR(K, W, z, lamb):

@@ -2,7 +2,7 @@ import numpy as np
 from lev_distance import levenshtein_dist
 import itertools
 
-
+################################################################ Mapping
 def convert_spectral_kernel_trig(sequences, list_seq_to_id):
     """ Return a list seq of nb of time the seq in list_seq_to_id appear in sequence"""
     final = []
@@ -182,7 +182,20 @@ def convert_mismatch_lev(sequences,list_seq_id,  nb_mismatch, size_seqID, nb_mis
         final.append([dico_appear[k] for k in list_seq_id])
     return final
 
-# Computation
+def convert_encode(sequences, list_letters):
+    """ Return list of vector encoding the sequences letters transformed in 1000, 0100, 0010,  0001"""
+    dict_trad = {list_letters[0]:[1.,0.,0.,0.], list_letters[1]:[0.,1.,0.,0.], list_letters[2]:[0.,0.,1.,0.], list_letters[3]:[0.,0.,0., 1.] }
+    final = []
+    for i in range(len(sequences)):
+        sequence = sequences[i]
+        vect = []
+        for j in range(len(sequence)):
+            vect += dict_trad[sequence[j]]
+        final.append(vect)
+    return final
+
+
+####################################################### Computation
 
 def gaussian_func(vect1, vect2, sigma):
     norm = np.linalg.norm(vect1 - vect2)
