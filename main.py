@@ -39,13 +39,13 @@ if mis_lev:
 
 mis_dic = False
 size_seq = 6
-nb_mis = 2
+nb_mis = 0
 beg = 0
 if mis_dic:
     dict_corres = get_correspondances(list_seq_id, nb_mis, list_letters)
     list_mis_corres = dict_corres.keys()
     print(list_mis_corres)
-mis_dic_full = False
+mis_dic_full = True
 if mis_dic_full:
     dict_corres = get_full_corres(list_seq_id, nb_mis, list_letters)
     list_mis_corres = dict_corres.keys()
@@ -60,14 +60,14 @@ for name in ["0", "1", "2"]:
     #list_converted = convert_spectral_kernel_trig(sequences, list_seq_id)
     #list_converted = convert_spectral_kernel_quad(sequences, list_quad)
 
-    list_converted = convert_spectral_kernel_quint(sequences, list_quint)
+    #list_converted = convert_spectral_kernel_quint(sequences, list_quint)
     #list_converted = convert_acid_kernel(sequences, dico_acid)
     #list_converted = convert_acid_quad(sequences, dico_acid, list_quad
 
     #list_converted = convert_mismatch_lev(sequences,  list_seq_id, dict_mismatch,  size_seq, nb_mis)
     #list_converted = convert_lect_trig(sequences, list_seq_id, beg)
     #list_converted = convert_lect_acid(sequences, dico_acid, beg)
-    #list_converted = convert_mismatch_dico(sequences, dict_corres,list_mis_corres, list_seq_id)
+    list_converted = convert_mismatch_dico(sequences, dict_corres,list_mis_corres, list_seq_id)
     training = np.asarray(list_converted, dtype = float)
     # to avoid huge values and to save time for the logistic regression :
     sm =  np.sum(training, axis= 1)
@@ -92,13 +92,13 @@ for name in ["0", "1", "2"]:
     sequences_test = read_csv_file_data("data/Xte"+ name+ ".csv")
     #list_converted_test = convert_spectral_kernel_trig(sequences_test, list_seq_id)
     #list_converted_test = convert_spectral_kernel_quad(sequences_test, list_quad)
-    list_converted_test = convert_spectral_kernel_quint(sequences_test, list_quint)
+    #list_converted_test = convert_spectral_kernel_quint(sequences_test, list_quint)
     #list_converted_test = convert_acid_kernel(sequences_test, dico_acid)
     #list_converted_test = convert_acid_quad(sequences_test, dico_acid, list_quad)
     #list_converted_test = convert_mismatch_lev(sequences_test, list_seq_id, dict_mismatch, size_seq, nb_mis)
     #list_converted_test = convert_lect_trig(sequences_test, list_seq_id, beg )
     #list_converted_test = convert_lect_acid(sequences_test, dico_acid, beg)
-    #list_converted_test = convert_mismatch_dico(sequences_test, dict_corres,list_mis_corres, list_seq_id)
+    list_converted_test = convert_mismatch_dico(sequences_test, dict_corres,list_mis_corres, list_seq_id)
     testing = np.asarray(list_converted_test, dtype = float)
     # to avoid huge values and to save time for the logistic regression :
     testing = testing/sm[0]
@@ -109,11 +109,10 @@ for name in ["0", "1", "2"]:
 
     # Computing the kernel
     print ("beginning computing K")
-    # K = compute_K_matrix(training)
-    # add = add_param*np.identity(K.shape[0])
-    # K_add = K + add # to make it positive definite
-    K = compute_K_gaussian(training, sigma)
-    K_add = K
+    K = compute_K_matrix(training)
+    add = add_param*np.identity(K.shape[0])
+    K_add = K + add # to make it positive definite
+    #K = compute_K_gaussian(training, sigma)
     print(K)
     print("K shape", K.shape)
     print(is_pos_def(K_add))
